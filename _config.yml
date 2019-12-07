@@ -26,3 +26,5 @@ comments:                    # embed disqus or isso comments
 plugins:
  - jekyll-feed
  - jekyll-default-layout
+
+theme: jekyll-theme-cayman
