@@ -1,6 +1,6 @@
 title: "Sarah Dwyer"
 author: "Sarah Dwyer"
-description: "infra/devops/cs learnings"
+description: "infra/devops/cs"
 permalink: /:title/
 lang: "en"
 
@@ -16,10 +16,11 @@ navigation:                  # site navigation in the header
 #  - LinkedIn: "https://www.linkedin.com/in/sbd/"
 
 icons:                      # icons in the header, see http://fontawesome.com/icons
-  github: "https://github.com/niklasbuschmann/contrast"
+  github: "https://github.com/sbd"
   twitter: "https://twitter.com/_sdwyer"
   linkedin: "https://www.linkedin.com/in/sbd/"
-#  envelope: "mailto:niklasbuschmann@users.noreply.github.com"
+  stack-overflow: "https://stackoverflow.com/users/10177443/dwyer"
+#  envelope: "mailto:AAAAAA@users.noreply.github.com"
 #  rss: "/contrast/feed.xml"
 
 comments:                    # embed disqus or isso comments
