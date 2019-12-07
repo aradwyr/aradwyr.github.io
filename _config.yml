@@ -27,4 +27,4 @@ plugins:
  - jekyll-feed
  - jekyll-default-layout
 
-theme: jekyll-theme-cayman
+theme: jekyll-theme-modernist
