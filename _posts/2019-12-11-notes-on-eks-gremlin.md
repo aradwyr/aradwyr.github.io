@@ -79,7 +79,7 @@ $ sudo aws2 eks --region us-west-2  update-kubeconfig --name ferocious-outfit-AA
 ```bash
 $ kubectl get nodes
 ```
-**Note: for AWS CLI v2 users**, if you come across the following error:
+**Note: for AWS CLI v2 users**, if you come across the following [error](https://github.com/aws/aws-cli/issues/4675):
 ```
 Unable to connect to the server: getting credentials: exec: exec: "aws": executable file not found in $PATH
 
@@ -130,7 +130,7 @@ $ kubectl get svc frontend-external -o wide
 Under external-IP, you should see a URL (which you'll visit in your browser):
     `aaaaaa-aaaaaaaaaaa.us-west-2.elb.amazonaws.com`
 
-### Connect Gremlin to your Kubernetes cluster with Helm:
+### **Connect Gremlin to your Kubernetes cluster with Helm**
 
 - To access your Gremlin certificates:
     - From the [Gremlin Dashboard]([https://app.gremlin.com/](https://app.gremlin.com/)): Under Company Settings > Teams tab > select your Team > Configuration tab > Certificates > Download
@@ -145,8 +145,8 @@ $ kubectl create secret generic gremlin-team-cert \
     - To find your Gremlin Team ID: Under Company Settings > Teams tab > select your Team > Configuration tab > Team ID
     - FYI: the cluster ID can be set to anything
 ```bash
-    $ export GREMLIN_TEAM_ID="replace-text-aaaaaa-aaaaaa"
-    $ export GREMLIN_CLUSTER_ID="replace-text"
+$ export GREMLIN_TEAM_ID="replace-text-aaaaaa-aaaaaa"
+$ export GREMLIN_CLUSTER_ID="replace-text"
 ```
 
 - Add Helm to your repo and upload the chart to Kubernetes:
@@ -159,7 +159,7 @@ $ kubectl create secret generic gremlin-team-cert \
   > \--set gremlin.clusterID=$GREMLIN_CLUSTER_ID
 ```
 
-## Gremlin Dashboard
+### **Gremlin Dashboard**
 + The final steps of the process involves launching a shutdown attack to test the microservices demo app (Hipster Shop) and the EKS clusters' reliability.
 + Go to your [Gremlin account's dashboard](https://app.gremlin.com/attacks/infrastructure) > select **New Attack**:
     - Under `What do you want to attack` >  select **Kubernetes**
@@ -176,7 +176,7 @@ $ kubectl create secret generic gremlin-team-cert \
 ![500 Error](/assets/gremlin-shutdown-attack.jpg)
 
 
-## Troubleshooting
+### Troubleshooting
 ```bash
 $ aws2 sts get-caller-identity
 $ aws-iam-authenticator token -i environment_name.region.environment_type
