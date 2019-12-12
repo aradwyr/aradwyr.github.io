@@ -173,7 +173,7 @@ $ kubectl create secret generic gremlin-team-cert \
         - Select **Unleash Gremlin**
 - Refresh `http://{CUSTOM_URL}.us-west-2.elb.amazonaws.com/` in your browser and you should see 500 Internal Server Error.
 
-![500 Error](/assets/gremlin-shutdown-attack.jpg))
+![500 Error](/assets/gremlin-shutdown-attack.jpg)
 
 
 ## Troubleshooting
