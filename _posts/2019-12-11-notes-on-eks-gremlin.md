@@ -175,6 +175,13 @@ $ export GREMLIN_CLUSTER_ID="replace-text"
 
 ![500 Error](/assets/gremlin-shutdown-attack.jpg)
 
+### Kubernetes Logs
+While the server is running, head back to:  
+```
+http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/#!/node?namespace=default
+```
+Navigate to **Cluster** > **Nodes** > select the node which contains the `cartservice` pod > from the `cartservice` row, note the **Restarts** figure.
+
 
 ### Troubleshooting
 ```bash
