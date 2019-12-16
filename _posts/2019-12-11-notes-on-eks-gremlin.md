@@ -22,7 +22,7 @@ $ brew install aws-iam-authenticator
 ```
 - **AWS CLI**
 
-    *For all the following commands: if using V2 of the AWS cli use `$ aws2`, otherwise `$ aws`*
+    *For all the following commands: if using v2 of the AWS cli use `$ aws2`, otherwise `$ aws`*
 ```bash
 $ curl "https://d1vvhvl2y92vvt.cloudfront.net/awscli-exe-macos.zip" -o "awscliv2.zip"
 $ unzip awscliv2.zip
@@ -79,12 +79,10 @@ $ sudo aws2 eks --region us-west-2  update-kubeconfig --name ferocious-outfit-AA
 ```bash
 $ kubectl get nodes
 ```
-+ **Note: for AWS CLI v2 users**, if you come across the following [error](https://github.com/aws/aws-cli/issues/4675):
++ **Note:** For AWS CLI v2 users, if you come across the [error](https://github.com/aws/aws-cli/issues/4675) below, you'll need to change `command: aws` to `command: aws2` in the config file (e.g. `/Users/sbd/.kube/config`).
 ```
 Unable to connect to the server: getting credentials: exec: exec: "aws": executable file not found in $PATH
 ```
-  + You'll need to change `command: aws` to `command: aws2` in the config file, e.g. `/Users/sbd/.kube/config`
-
 
 ```bash
 $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/influxdb/heapster.yaml
@@ -101,7 +99,7 @@ For more information, check out the [AWS docs](https://docs.aws.amazon.com/eks/l
 $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml
 ```
 
-Create a file, `eks-admin-service-account.yaml` with the following:
+Create a `eks-admin-service-account.yaml` file with the following:
 ```
 apiVersion: v1
 kind: ServiceAccount
@@ -214,7 +212,7 @@ http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-da
 Navigate to **Cluster** > **Nodes** > select the node which contains the `cartservice` pod > from the `cartservice` row, note the **Restarts** figure.
 
 
-### Teardown
+## Teardown
 Now that the tutorial is completed, we need to [delete the cluster](https://docs.aws.amazon.com/eks/latest/userguide/delete-cluster.html).
 
 List all the services running in the cluster with:
@@ -222,7 +220,7 @@ List all the services running in the cluster with:
 $ kubectl get svc --all-namespaces
 ```
 
-First delete any service(s) associated with an **EXTERNAL-IP** value:
+Firstly, delete any service(s) associated with an **EXTERNAL-IP** value:
 ```bash
 $ kubectl delete svc frontend-external
 ```
