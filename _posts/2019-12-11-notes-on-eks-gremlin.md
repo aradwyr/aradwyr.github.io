@@ -79,27 +79,59 @@ $ sudo aws2 eks --region us-west-2  update-kubeconfig --name ferocious-outfit-AA
 ```bash
 $ kubectl get nodes
 ```
-**Note: for AWS CLI v2 users**, if you come across the following [error](https://github.com/aws/aws-cli/issues/4675):
++ **Note: for AWS CLI v2 users**, if you come across the following [error](https://github.com/aws/aws-cli/issues/4675):
 ```
 Unable to connect to the server: getting credentials: exec: exec: "aws": executable file not found in $PATH
-
-You'll need to change `command: aws` to `command: aws2` in the config file, e.g. "/Users/sbd/.kube/config"
 ```
+  + You'll need to change `command: aws` to `command: aws2` in the config file, e.g. `/Users/sbd/.kube/config`
+
 
 ```bash
-$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml
-
 $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/influxdb/heapster.yaml
 
 $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/influxdb/influxdb.yaml
 
 $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/rbac/heapster-rbac.yaml
+```
 
-$ kubectl apply -f https://raw.githubusercontent.com/tammybutow/eks-aws/master/eks-admin-service-account.yaml
+### Deploy Kubernetes Web UI/Dashboard
+For more information, check out the [AWS docs](https://docs.aws.amazon.com/eks/latest/userguide/dashboard-tutorial.html).
 
+```bash
+$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml
+```
+
+Create a file, `eks-admin-service-account.yaml` with the following:
+```
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: eks-admin
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: eks-admin
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: eks-admin
+  namespace: kube-system
+```
+
+Apply the service account and role binding to your cluster:
+```bash
+$ kubectl apply -f eks-admin-service-account.yaml
+```
+
+Obtain an auth token for the service account with:
+```bash
 $ kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep eks-admin | awk '{print $1}')
 ```
-**Note**: This will output a token we will need shortly
 
 ```bash
 $ kubectl proxy
@@ -107,12 +139,11 @@ $ kubectl proxy
 + Should display: Starting to serve on 127.0.0.1:8001
 + **Note:** control + C to exit
 
-Access the Kubernetes Dashboard via the URL:
+Access the Kubernetes Dashboard endpoint with:
 ```
 http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/#!/login
 ```
-
-  - Enter in token returned from a previous step
+  - Select **Token** > enter in auth token returned from previous step > **Sign In**
 
 ### **Microservices Demo App Deployment**
 ```bash
@@ -173,7 +204,7 @@ $ export GREMLIN_CLUSTER_ID="replace-text"
         - Select **Unleash Gremlin**
 - Refresh `http://{CUSTOM_URL}.us-west-2.elb.amazonaws.com/` in your browser and you should see 500 Internal Server Error.
 
-![500 Error](/assets/gremlin-shutdown-attack.jpg)
+![500 Error](https://raw.githubusercontent.com/sbd/sbd.github.io/master/assets/gremlin-shutdown-attack.jpg)
 
 ### Kubernetes Logs
 While the server is running, head back to:  
@@ -183,7 +214,26 @@ http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-da
 Navigate to **Cluster** > **Nodes** > select the node which contains the `cartservice` pod > from the `cartservice` row, note the **Restarts** figure.
 
 
+### Teardown
+Now that the tutorial is completed, we need to [delete the cluster](https://docs.aws.amazon.com/eks/latest/userguide/delete-cluster.html).
+
+List all the services running in the cluster with:
+```bash
+$ kubectl get svc --all-namespaces
+```
+
+First delete any service(s) associated with an **EXTERNAL-IP** value:
+```bash
+$ kubectl delete svc frontend-external
+```
+**Note:** If services in your cluster are associated with a load balancer, delete the services before deleting the cluster so that the load balancers are deleted properly. Else, you can have orphaned resources in your VPC that prevent you from being able to delete the VPC.
+
+```bash
+$ eksctl delete cluster --name ferocious-outfit-AAAA
+```
+
 ### Troubleshooting
+If you encounter any issues, please report it on [Github](https://github.com/sbd/sbd.github.io/issues).
 ```bash
 $ aws2 sts get-caller-identity
 $ aws-iam-authenticator token -i environment_name.region.environment_type
