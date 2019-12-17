@@ -1,13 +1,13 @@
 title: "Sarah Dwyer"
 author: "Sarah Dwyer"
-description: "infra/devops/cs"
+description: "devops, infra, and beyond"
 permalink: /:title/
 lang: "en"
 
 show_footer: false           # show the "previous" and "next" links at the end of each post
 dark_theme: false             # use the dark mode as default
-dark_header: true            # keep the header dark
-dark_footer: true            # keep the footer dark
+dark_header: false            # keep the header dark
+dark_footer: false            # keep the footer dark
 style: minimal             # use a simpler style inspired by the minima theme
 
 navigation:                  # site navigation in the header
@@ -15,10 +15,11 @@ navigation:                  # site navigation in the header
 #  - Github: "https://github.com/sbd/sbd.github.io"
 #  - LinkedIn: "https://www.linkedin.com/in/sbd/"
 
-icons:                      # icons in the header, see http://fontawesome.com/icons
+icons:                      # icons in the header, see https://fontawesome.com/icons
   github: "https://github.com/sbd"
   twitter: "https://twitter.com/_sdwyer"
   linkedin: "https://www.linkedin.com/in/sbd/"
+  medium: "https://medium.com/@_sdwyer"
   stack-overflow: "https://stackoverflow.com/users/10177443/dwyer"
 #  envelope: "mailto:AAAAAA@users.noreply.github.com"
 #  rss: "/contrast/feed.xml"
