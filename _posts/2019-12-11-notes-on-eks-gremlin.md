@@ -5,26 +5,26 @@ title: "Notes on: Amazon EKS, Microservices Demo Shop App, and Gremlin"
 
 The following information comes directly from this [tutorial](https://www.gremlin.com/community/tutorials/how-to-install-and-use-gremlin-with-eks/). The purpose of this post is largely an effort to rewrite/clarify. If there are any issues, please report it on [Github](https://github.com/sbd/sbd.github.io/issues).
 
-Once you have gone through this tutorial, you'll have set up the following:
+This tutorial will go through the following:
 
-- Create an AWS EKS (Elastic Kubernetes Service) cluster
-- Deploy a Kubernetes Dashboard
-- Deploy a [microservices demo application](https://github.com/GoogleCloudPlatform/microservices-demo) (maintained by Google)
-- Install the Gremlin agent as a daemon set and launch an attack with Gremlin to ensure cluster reliability
+- Creating an AWS EKS (Elastic Kubernetes Service) cluster
+- Deploying a Kubernetes Dashboard
+- Deploying a [microservices demo application](https://github.com/GoogleCloudPlatform/microservices-demo) (maintained by Google)
+- Installing the Gremlin agent as a daemon set and launching a shutdown attack with Gremlin to check cluster reliability
 
 ## Pre-requisite Installations:
 
-- **Homebrew**
+- **[Homebrew](https://brew.sh/)**
 ```bash
 $ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
-- **AWS Auth**
+- **[AWS Auth](https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html)**
 ```bash
 $ brew install aws-iam-authenticator
 ```
-- **AWS CLI**
+- **[AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html)**
 
-    *For all the following commands: if using v2 of the AWS cli use `$ aws2`, otherwise `$ aws`*
+    **Note**: If using v2 of the AWS CLI, use `$ aws2`, otherwise `$ aws`
 ```bash
 $ curl "https://d1vvhvl2y92vvt.cloudfront.net/awscli-exe-macos.zip" -o "awscliv2.zip"
 $ unzip awscliv2.zip
@@ -52,7 +52,7 @@ $ chmod +x ./kubectl
 $ sudo mv ./kubectl /usr/local/bin/kubectl
 $ kubectl version
 ```
-- **[Helm](https://helm.sh/docs/intro/quickstart/)** to connect the Gremlin client on your Kubernetes cluster
+- **[Helm](https://helm.sh/docs/intro/quickstart/)** for connecting the Gremlin client on your Kubernetes cluster
 ```bash
 $ brew install kubernetes-helm
 ```
@@ -101,7 +101,7 @@ For more information, check out the [AWS docs](https://docs.aws.amazon.com/eks/l
 $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml
 ```
 
-Create a `eks-admin-service-account.yaml` file with the following:
+Create an `eks-admin-service-account.yaml` file with the following:
 ```
 apiVersion: v1
 kind: ServiceAccount
@@ -158,13 +158,16 @@ $ kubectl get pods
 $ kubectl get svc frontend-external -o wide
 ```
 
-Under external-IP, you should see a URL (which you'll visit in your browser):
-    `aaaaaa-aaaaaaaaaaa.us-west-2.elb.amazonaws.com`
+Under **External-IP**, you should see a similar URL, which you'll visit in your browser.
+```
+aaaaaa-aaaaaaaaaaa.us-west-2.elb.amazonaws.com
+```
 
 ### **Connect Gremlin to your Kubernetes cluster with Helm**
 
 - To access your Gremlin certificates:
-    - From the [Gremlin Dashboard]([https://app.gremlin.com/](https://app.gremlin.com/)): Under Company Settings > Teams tab > select your Team > Configuration tab > Certificates > Download
+    - From the [Gremlin Dashboard](https://app.gremlin.com/)
+       - Under Company Settings > Teams tab > select your Team > Configuration tab > Certificates > Download
     - FYI:  Zip file will contain both private and public keys. Rename the certificate and key files to gremlin.cert and gremlin.key, respectively
 ```bash
 $ kubectl create secret generic gremlin-team-cert \
@@ -226,7 +229,7 @@ Firstly, delete any service(s) associated with an **EXTERNAL-IP** value:
 ```bash
 $ kubectl delete svc frontend-external
 ```
-**Note:** If services in your cluster are associated with a load balancer, delete the services before deleting the cluster so that the load balancers are deleted properly. Else, you can have orphaned resources in your VPC that prevent you from being able to delete the VPC.
+**Note:** If services in your cluster are associated with a load balancer, delete the services before deleting the cluster so that the load balancers are deleted properly. Else, you'll have remaining resources in your VPC, which will prevent VPC deletion.
 
 ```bash
 $ eksctl delete cluster --name ferocious-outfit-AAAA
