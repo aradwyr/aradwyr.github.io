@@ -1,6 +1,8 @@
 ---
 title: "Notes on: Amazon EKS, Microservices Demo Shop App, and Gremlin"
 ---
+![Kubernetes](/assets/k8s.jpg)
+
 The following information comes directly from this [tutorial](https://www.gremlin.com/community/tutorials/how-to-install-and-use-gremlin-with-eks/). The purpose of this post is largely an effort to rewrite/clarify. If there are any issues, please report it on [Github](https://github.com/sbd/sbd.github.io/issues).
 
 Once you have gone through this tutorial, you'll have set up the following:
@@ -36,21 +38,21 @@ $ aws2 configure
     Default region name [None]: us-west-2
     Default output format [None]: json
 ```
-- **Amazon EKS CLI, [ekscli]([https://eksctl.io/](https://eksctl.io/))**
+- **Amazon EKS CLI, [ekscli](https://eksctl.io/)**
 ```bash
 $ curl --silent --location "https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp sudo mv /tmp/eksctl /usr/local/bin
 $ brew tap weaveworks/tap
 $ brew install weaveworks/tap/eksctl
 $ eksctl version
 ```
-- **Kubernetes CLI, [kubctl]([https://kubernetes.io/docs/tasks/tools/install-kubectl/](https://kubernetes.io/docs/tasks/tools/install-kubectl/))**
+- **Kubernetes CLI, [kubctl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)**
 ```bash
 $ curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/darwin/amd64/kubectl"
 $ chmod +x ./kubectl
 $ sudo mv ./kubectl /usr/local/bin/kubectl
 $ kubectl version
 ```
-- **[Helm]([https://helm.sh/docs/intro/quickstart/](https://helm.sh/docs/intro/quickstart/))** to connect the Gremlin client on your Kubernetes cluster
+- **[Helm](https://helm.sh/docs/intro/quickstart/)** to connect the Gremlin client on your Kubernetes cluster
 ```bash
 $ brew install kubernetes-helm
 ```
