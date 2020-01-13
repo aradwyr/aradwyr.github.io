@@ -17,9 +17,9 @@ navigation:                  # site navigation in the header
 
 icons:                      # icons in the header, see https://fontawesome.com/icons
   github: "https://github.com/sbd"
-  twitter: "https://twitter.com/_sdwyer"
+  twitter: "https://twitter.com/sdwyer__"
   linkedin: "https://www.linkedin.com/in/sbd/"
-  medium: "https://medium.com/@_sdwyer"
+  medium: "https://medium.com/@sdwyer__"
   stack-overflow: "https://stackoverflow.com/users/10177443/dwyer"
 #  envelope: "mailto:AAAAAA@users.noreply.github.com"
 #  rss: "/contrast/feed.xml"
