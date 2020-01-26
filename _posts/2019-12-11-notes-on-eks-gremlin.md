@@ -3,7 +3,7 @@ title: "Notes on: Amazon EKS, Microservices Demo Shop App, and Gremlin"
 ---
 ![Kubernetes](/assets/k8s.jpg)
 
-The following information comes directly from this [tutorial](https://www.gremlin.com/community/tutorials/how-to-install-and-use-gremlin-with-eks/). The purpose of this post is largely an effort to rewrite/clarify. If there are any issues, please report it on [Github](https://github.com/sbd/sbd.github.io/issues).
+The following information comes directly from this [tutorial](https://www.gremlin.com/community/tutorials/how-to-install-and-use-gremlin-with-eks/). The purpose of this post is largely an effort to rewrite/clarify. If there are any issues, please report it on [Github](https://github.com/aradwyr/aradwyr.github.io/issues).
 
 This tutorial will go through the following:
 
@@ -81,7 +81,7 @@ $ sudo aws2 eks --region us-west-2  update-kubeconfig --name ferocious-outfit-AA
 ```bash
 $ kubectl get nodes
 ```
-+ **Note:** For AWS CLI v2 users, if you come across the [error](https://github.com/aws/aws-cli/issues/4675) below, you'll need to change `command: aws` to `command: aws2` in the config file (e.g. `/Users/sbd/.kube/config`).
++ **Note:** For AWS CLI v2 users, if you come across the [error](https://github.com/aws/aws-cli/issues/4675) below, you'll need to change `command: aws` to `command: aws2` in the config file (e.g. `/Users/username/.kube/config`).
 ```
 Unable to connect to the server: getting credentials: exec: exec: "aws": executable file not found in $PATH
 ```
@@ -172,8 +172,8 @@ aaaaaa-aaaaaaaaaaa.us-west-2.elb.amazonaws.com
 ```bash
 $ kubectl create secret generic gremlin-team-cert \
 > \--namespace=gremlin  \
-> \--from-file=/Users/sbd/Documents/certificate/gremlin.cert \
-> \--from-file=/Users/sbd/Documents/certificate/gremlin.key
+> \--from-file=/Users/username/Documents/certificate/gremlin.cert \
+> \--from-file=/Users/username/Documents/certificate/gremlin.key
 ```
 - Set Gremlin environment variables:
     - To find your Gremlin Team ID: Under Company Settings > Teams tab > select your Team > Configuration tab > Team ID
@@ -207,7 +207,7 @@ $ export GREMLIN_CLUSTER_ID="replace-text"
         - Select **Unleash Gremlin**
 - Refresh `http://{CUSTOM_URL}.us-west-2.elb.amazonaws.com/` in your browser and you should see 500 Internal Server Error.
 
-![500 Error](https://raw.githubusercontent.com/sbd/sbd.github.io/master/assets/gremlin-shutdown-attack.jpg)
+![500 Error](https://raw.githubusercontent.com/aradwyr/aradwyr.github.io/master/assets/gremlin-shutdown-attack.jpg)
 
 ### Kubernetes Logs
 While the server is running, head back to:  
@@ -236,7 +236,7 @@ $ eksctl delete cluster --name ferocious-outfit-AAAA
 ```
 
 ### Troubleshooting
-If you encounter any issues, please report it on [Github](https://github.com/sbd/sbd.github.io/issues).
+If you encounter any issues, please report it on [Github](https://github.com/aradwyr/aradwyr.github.io/issues).
 ```bash
 $ aws2 sts get-caller-identity
 $ aws-iam-authenticator token -i environment_name.region.environment_type
