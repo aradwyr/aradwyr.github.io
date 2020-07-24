@@ -32,4 +32,4 @@ plugins:
  - jekyll-feed
  - jekyll-default-layout
 
-theme: jekyll-theme-modernist
+theme: jekyll-theme-minimal
