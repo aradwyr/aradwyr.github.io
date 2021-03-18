@@ -1,6 +1,6 @@
 title: "Sarah Dwyer"
 author: "Sarah Dwyer"
-description: "infra, security, and beyond"
+description: "all things infra and security"
 permalink: /:title/
 lang: "en"
 
@@ -16,6 +16,7 @@ navigation:                  # site navigation in the header
 #  - LinkedIn: "https://"
 
 icons:                      # icons in the header, see https://fontawesome.com/icons
+  bitbucket: "https://bitbucket.org/aradwyr/"
   github: "https://github.com/aradwyr"
   stack-overflow: "https://stackoverflow.com/cv/aradwyr"
   twitter: "https://twitter.com/aradwyr"
