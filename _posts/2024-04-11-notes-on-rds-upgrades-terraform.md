@@ -2,7 +2,7 @@
 title: "Notes on: RDS Upgrades in Terraform"
 ---
 
-This post presents a simple, straightforward pathway to regularly upgrading key infrastructure via terraform. The focus of this guide will be on upgrading AWS RDS Postgresql instances but very similar approaches would also work for other cloud platforms and database engines. The main benefits of using terraform are transparency across engineering teams as well as terraform prevents accidents from premature upgrades, i.e. when the pre-requisite steps have not been yet addressed. Goes without saying, the following steps should be done during off hours for production instances to avoid any and all disruption, making use of the resource's set maintenance window to ensure there's no active connections during this change. 
+This post presents a simple, straightforward pathway to regularly upgrading key infrastructure via terraform. The focus of this guide will be on upgrading AWS RDS PostgreSQL instances but very similar approaches would also work for other cloud platforms and database engines. The main benefits of using terraform are transparency across engineering teams as well as terraform prevents accidents from premature upgrades, i.e. when the pre-requisite steps have not been yet addressed. Goes without saying, the following steps should be done during off hours for production instances to avoid any and all disruption, making use of the resource's set maintenance window to ensure there's no active connections during this change. 
 
 ## Pre-requisites
 1. Apply pending OS updates on the instance(s) (if any)
@@ -27,8 +27,7 @@ This post presents a simple, straightforward pathway to regularly upgrading key 
         - Pre-upgrade: `DROP EXTENSION <name>;`
         - Post-upgrade: `DROP EXTENSION <name>;` 
 
-> [!WARNING]  
-> Earlier AWS postgis documentation used to suggest dropping the postgis extension via `DROP EXTENSION example_extension CASCADE;` Please do not do this. 
+:warning: Earlier AWS postgis documentation used to suggest dropping the postgis extension via `DROP EXTENSION example_extension CASCADE;` Please do not do this. 
 
 5. Check for CDC replication slots (if any) and drop only just before the upgrade, else the upgrade will not succeed. 
 
@@ -42,6 +41,7 @@ You might see `ERROR: replication slot "debezium" is active for PID <NNNNN>`, th
 
 ```sql
 select pg_terminate_backend(NNNNN); select pg_drop_replication_slot('debezium');
+```
 
 ## Terraform Process
 First you'll need to have the following parameters applied to state before you attempt the upgrade. 
@@ -56,11 +56,9 @@ engine_version = "13"
 parameter_group_name = "custom-postgres-13"
 ```
 
-> [!TIP]
-> If the database in question has a primary and replica/reader then be sure to only upgrade the primary instance. Else, the upgrade will not succeed. Nonetheless, the reader will still need the `allow_major_version_upgrade = true` and `deletion_protection = false` are set on the replica(s). 
+:point_right: If the database in question has a primary and replica/reader then be sure to only upgrade the primary instance. Else, the upgrade will not succeed. Nonetheless, the reader will still need the `allow_major_version_upgrade = true` and `deletion_protection = false` are set on the replica(s). 
 
-> [!NOTE]
-> If the upgrade fails in terraform, check RDS logs for the specific reason, it's usually extension-related.
+:memo: If the upgrade fails in terraform, check RDS logs for the specifics, it's usually extension-related.
 
 ## Post-upgrade
 ```sql
@@ -74,16 +72,14 @@ psql <postgres://user:pass@endpoint:5432/db_name>
 
 reindex database concurrently <db_name>;
 ```
-> [!WARNING]  
-> For an 86GB db the reindex took ~6 hours and the connection must remain open during the reindex process. 
+
+:warning: For an 86GB db the reindex took ~6 hours and the connection must remain open during the reindex process. 
 
 ## References
 - https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_UpgradeDBInstance.PostgreSQL.html 
 - https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.PostgreSQL.CommonDBATasks.PostGIS.html
 - https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance 
-
-> [!TIP]
-> JQ tangent/invaluable resource: https://www.devtoolsdaily.com/jq_playground/ 
+- JQ tangent/invaluable resource: https://www.devtoolsdaily.com/jq_playground/ 
 
 ## Feedback & Contributions
-Feel free to reach out at aradwyr@gmail.com
+:memo: Feel free to reach out at https://github.com/aradwyr/aradwyr.github.io/issues
