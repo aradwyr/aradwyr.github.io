@@ -23,11 +23,10 @@ This post presents a simple, straightforward pathway to regularly upgrading key 
             ```
             SELECT postgis_extensions_upgrade();
             ```
+        🚨 Earlier AWS postGIS documentation used to suggest dropping the postgis extension via `DROP EXTENSION example_extension CASCADE;` Please do not do this. 
     - If `chkpass`, `tsearch2` extensions are installed then run: 
         - Pre-upgrade: `DROP EXTENSION <name>;`
         - Post-upgrade: `DROP EXTENSION <name>;` 
-
-:warning: Earlier AWS postgis documentation used to suggest dropping the postgis extension via `DROP EXTENSION example_extension CASCADE;` Please do not do this. 
 
 5. Check for CDC replication slots (if any) and drop only just before the upgrade, else the upgrade will not succeed. 
 
@@ -56,9 +55,9 @@ engine_version = "13"
 parameter_group_name = "custom-postgres-13"
 ```
 
-:point_right: If the database in question has a primary and replica/reader then be sure to only upgrade the primary instance. Else, the upgrade will not succeed. Nonetheless, the reader will still need the `allow_major_version_upgrade = true` and `deletion_protection = false` are set on the replica(s). 
+👉 If the database in question has a primary and replica/reader then be sure to only upgrade the primary instance. Else, the upgrade will not succeed. Nonetheless, the reader will still need the `allow_major_version_upgrade = true` and `deletion_protection = false` are set on the replica(s). 
 
-:memo: If the upgrade fails in terraform, check RDS logs for the specifics, it's usually extension-related.
+👉 If the upgrade fails in terraform, check RDS logs for the specifics, it's usually extension-related.
 
 ## Post-upgrade
 ```sql
@@ -73,13 +72,12 @@ psql <postgres://user:pass@endpoint:5432/db_name>
 reindex database concurrently <db_name>;
 ```
 
-:warning: For an 86GB db the reindex took ~6 hours and the connection must remain open during the reindex process. 
+🚨 For an 86GB db the reindex took ~6 hours and the connection must remain open during the reindex process. 
 
 ## References
-- https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_UpgradeDBInstance.PostgreSQL.html 
-- https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.PostgreSQL.CommonDBATasks.PostGIS.html
-- https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance 
-- JQ tangent/invaluable resource: https://www.devtoolsdaily.com/jq_playground/ 
+- [AWS RDS Guide](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_UpgradeDBInstance.PostgreSQL.html) 
+- [AWS PostGIS Guide](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.PostgreSQL.CommonDBATasks.PostGIS.html)
+- [Terraform for AWS RDS](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance)
 
 ## Feedback & Contributions
-:memo: Feel free to reach out at https://github.com/aradwyr/aradwyr.github.io/issues
+📝 Feel free to reach out [on Github](https://github.com/aradwyr/aradwyr.github.io/issues) if there's any issues
