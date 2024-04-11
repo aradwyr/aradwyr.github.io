@@ -30,10 +30,7 @@ This post presents a simple, straightforward pathway to regularly upgrading key 
 > [!WARNING]  
 > Earlier AWS postgis documentation used to suggest dropping the postgis extension via `DROP EXTENSION example_extension CASCADE;` Please do not do this. 
 
-<details>
-<summary>5. Check for replication slots (if any)</summary>
-<br>
-Check for CDC replication slots (if any) and drop only just before the upgrade, else the upgrade will not succeed. 
+5. Check for CDC replication slots (if any) and drop only just before the upgrade, else the upgrade will not succeed. 
 
 ```sql
 select * from pg_replication_slots;
@@ -45,8 +42,6 @@ You might see `ERROR: replication slot "debezium" is active for PID <NNNNN>`, th
 
 ```sql
 select pg_terminate_backend(NNNNN); select pg_drop_replication_slot('debezium');
-```
-</details>
 
 ## Terraform Process
 First you'll need to have the following parameters applied to state before you attempt the upgrade. 
